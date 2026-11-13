@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Book {{ package.name }} - Official Celebrity Management{% endblock %}
+
+{% block content %}
+
+<section class="page-header text-white text-center py-4">
+    <div class="container py-3">
+        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3">
+            <i class="fas fa-calendar-check me-1"></i> {{ package.type }}
+        </span>
+        <h1 class="display-5 fw-bold mb-2">{{ package.name }}</h1>
+        <p class="text-white-50">Fill in your details to submit your booking request</p>
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="row g-5 justify-content-center">
+
+        <!-- Booking Form -->
+        <div class="col-lg-7">
+            <div class="dash-card rounded-4 p-4">
+                <h4 class="fw-bold mb-4">
+                    <i class="fas fa-user text-warning me-2"></i>Your Details
+                </h4>
+                <form method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" name="full_name" class="form-control" required
+                                   placeholder="Enter your full name"
+                                   value="{{ current_user.full_name if current_user.is_authenticated else '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control" required
+                                   placeholder="Enter your email"
+                                   value="{{ current_user.email if current_user.is_authenticated else '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" name="phone" class="form-control"
+                                   placeholder="Enter your phone number">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Celebrity Name</label>
+                            <input type="text" name="celebrity_name" class="form-control"
+                                   placeholder="e.g. Ed Sheeran"
+                                   value="{{ celebrity_name }}">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Additional Message</label>
+                            <textarea name="message" class="form-control" rows="4"
+                                      placeholder="Any special requests or additional information..."></textarea>
+                        </div>
+
+                        <!-- Package Info Hidden -->
+                        <div class="col-12">
+                            <div class="order-summary-inline p-3 rounded-3 mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">Selected Package</span>
+                                    <span class="fw-bold">{{ package.name }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <span class="text-muted">Price</span>
+                                    <span class="fw-bold text-warning fs-5">{{ package.price }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="alert alert-info rounded-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                After submitting, your email client will open with all booking details pre-filled. Send the email to receive payment instructions from our team.
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-warning btn-lg rounded-pill px-5 fw-bold w-100">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Booking Request
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+            <div class="celeb-cta-card rounded-4 p-4 mb-4">
+                <h5 class="fw-bold mb-3">
+                    <i class="fas fa-receipt text-warning me-2"></i>Order Summary
+                </h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Package</span>
+                    <span class="fw-bold small text-end" style="max-width:60%;">{{ package.name }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Type</span>
+                    <span class="badge bg-warning text-dark rounded-pill">{{ package.type }}</span>
+                </div>
+                <hr class="border-secondary">
+                <div class="d-flex justify-content-between">
+                    <span class="fw-bold">Total</span>
+                    <span class="fw-bold text-warning fs-4">{{ package.price }}</span>
+                </div>
+            </div>
+
+            <div class="dash-card rounded-4 p-4">
+                <h6 class="fw-bold mb-3">
+                    <i class="fas fa-check-circle text-warning me-2"></i>What's Included
+                </h6>
+                <ul class="list-unstyled mb-0">
+                    {% for perk in package.perks %}
+                    <li class="mb-2">
+                        <i class="fas fa-check text-warning me-2"></i>
+                        <small>{{ perk }}</small>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="dash-card rounded-4 p-4 mt-4">
+                <h6 class="fw-bold mb-3">
+                    <i class="fas fa-shield-alt text-warning me-2"></i>How It Works
+                </h6>
+                <ol class="list-unstyled mb-0">
+                    <li class="mb-2 d-flex gap-2">
+                        <span class="badge bg-warning text-dark rounded-circle" style="min-width:24px; height:24px; display:flex; align-items:center; justify-content:center;">1</span>
+                        <small>Fill in your details and submit</small>
+                    </li>
+                    <li class="mb-2 d-flex gap-2">
+                        <span class="badge bg-warning text-dark rounded-circle" style="min-width:24px; height:24px; display:flex; align-items:center; justify-content:center;">2</span>
+                        <small>Your email opens with booking details pre-filled</small>
+                    </li>
+                    <li class="mb-2 d-flex gap-2">
+                        <span class="badge bg-warning text-dark rounded-circle" style="min-width:24px; height:24px; display:flex; align-items:center; justify-content:center;">3</span>
+                        <small>Send the email to our team</small>
+                    </li>
+                    <li class="mb-2 d-flex gap-2">
+                        <span class="badge bg-warning text-dark rounded-circle" style="min-width:24px; height:24px; display:flex; align-items:center; justify-content:center;">4</span>
+                        <small>Receive payment instructions within 24 hours</small>
+                    </li>
+                    <li class="d-flex gap-2">
+                        <span class="badge bg-warning text-dark rounded-circle" style="min-width:24px; height:24px; display:flex; align-items:center; justify-content:center;">5</span>
+                        <small>Booking confirmed after payment</small>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

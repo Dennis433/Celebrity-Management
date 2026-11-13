@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ celeb.name }} - Official Celebrity Management{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="celeb-detail-hero py-5">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+
+            <!-- Image -->
+            <div class="col-lg-4 text-center">
+                <div class="celeb-detail-img-wrapper mx-auto">
+                    {% if celeb.image %}
+                    <img src="{{ url_for('static', filename=celeb.image) }}"
+                         alt="{{ celeb.name }}"
+                         class="celeb-detail-img"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="celeb-detail-placeholder" style="display:none;">
+                        <i class="fas fa-user fa-5x text-warning"></i>
+                    </div>
+                    {% else %}
+                    <div class="celeb-detail-placeholder">
+                        <i class="fas fa-user fa-5x text-warning"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="mt-3">
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold">
+                        {{ celeb.category }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="col-lg-8">
+                <nav aria-label="breadcrumb" class="mb-3">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{ url_for('celebrities.index') }}" class="text-warning">Celebrities</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ url_for('celebrities.index', category=celeb.category) }}" class="text-warning">{{ celeb.category }}</a>
+                        </li>
+                        <li class="breadcrumb-item active text-muted">{{ celeb.name }}</li>
+                    </ol>
+                </nav>
+
+                <h1 class="display-4 fw-bold text-white mb-2">{{ celeb.name }}</h1>
+
+                {% if celeb.known_for %}
+                <p class="text-warning fs-5 mb-4">
+                    <i class="fas fa-star me-2"></i>{{ celeb.known_for }}
+                </p>
+                {% endif %}
+
+                <!-- Stats Row -->
+                <div class="row g-3 mb-4">
+                    {% if celeb.net_worth %}
+                    <div class="col-6 col-md-3">
+                        <div class="celeb-stat-card text-center p-3 rounded-3">
+                            <i class="fas fa-dollar-sign text-warning mb-2 d-block"></i>
+                            <div class="fw-bold text-warning">{{ celeb.net_worth }}</div>
+                            <small class="text-muted">Net Worth</small>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if celeb.nationality %}
+                    <div class="col-6 col-md-3">
+                        <div class="celeb-stat-card text-center p-3 rounded-3">
+                            <i class="fas fa-globe text-warning mb-2 d-block"></i>
+                            <div class="fw-bold">{{ celeb.nationality }}</div>
+                            <small class="text-muted">Nationality</small>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if celeb.born %}
+                    <div class="col-6 col-md-3">
+                        <div class="celeb-stat-card text-center p-3 rounded-3">
+                            <i class="fas fa-birthday-cake text-warning mb-2 d-block"></i>
+                            <div class="fw-bold">{{ celeb.born }}</div>
+                            <small class="text-muted">Born</small>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="col-6 col-md-3">
+                        <div class="celeb-stat-card text-center p-3 rounded-3">
+                            <i class="fas fa-tag text-warning mb-2 d-block"></i>
+                            <div class="fw-bold small">{{ celeb.category.split(' ')[0] }}</div>
+                            <small class="text-muted">Category</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{{ url_for('membership.index') }}" class="btn btn-warning btn-lg rounded-pill px-5 fw-bold">
+                        <i class="fas fa-id-card me-2"></i>Get Membership
+                    </a>
+                    <a href="{{ url_for('experiences.index') }}" class="btn btn-outline-light btn-lg rounded-pill px-5">
+                        <i class="fas fa-calendar-check me-2"></i>Book Experience
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Biography -->
+<section class="container py-5">
+    <div class="row g-5">
+
+        <!-- Bio -->
+        <div class="col-lg-8">
+            <div class="celeb-bio-card rounded-4 p-4 mb-4">
+                <h3 class="fw-bold mb-4">
+                    <i class="fas fa-user-circle text-warning me-2"></i>Biography
+                </h3>
+                {% if celeb.bio %}
+                <div class="bio-text">
+                    {% for paragraph in celeb.bio.split('\n') %}
+                        {% if paragraph.strip() %}
+                        <p class="text-muted lh-lg">{{ paragraph }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-pen fa-3x text-muted mb-3 d-block opacity-25"></i>
+                    <p class="text-muted">Biography coming soon.</p>
+                    {% if current_user.is_authenticated and current_user.is_admin %}
+                    <a href="{{ url_for('admin.edit_celebrity', celeb_id=celeb.id) }}"
+                       class="btn btn-warning rounded-pill px-4">
+                        <i class="fas fa-edit me-2"></i>Add Biography
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+
+            <!-- Quick Facts -->
+            <div class="celeb-bio-card rounded-4 p-4 mb-4">
+                <h5 class="fw-bold mb-4">
+                    <i class="fas fa-info-circle text-warning me-2"></i>Quick Facts
+                </h5>
+                <ul class="list-unstyled quick-facts">
+                    <li class="d-flex justify-content-between py-2 border-bottom border-secondary">
+                        <span class="text-muted">Full Name</span>
+                        <span class="fw-bold text-end">{{ celeb.name }}</span>
+                    </li>
+                    {% if celeb.born %}
+                    <li class="d-flex justify-content-between py-2 border-bottom border-secondary">
+                        <span class="text-muted">Born</span>
+                        <span class="fw-bold">{{ celeb.born }}</span>
+                    </li>
+                    {% endif %}
+                    {% if celeb.nationality %}
+                    <li class="d-flex justify-content-between py-2 border-bottom border-secondary">
+                        <span class="text-muted">Nationality</span>
+                        <span class="fw-bold">{{ celeb.nationality }}</span>
+                    </li>
+                    {% endif %}
+                    {% if celeb.net_worth %}
+                    <li class="d-flex justify-content-between py-2 border-bottom border-secondary">
+                        <span class="text-muted">Net Worth</span>
+                        <span class="fw-bold text-warning">{{ celeb.net_worth }}</span>
+                    </li>
+                    {% endif %}
+                    {% if celeb.known_for %}
+                    <li class="d-flex justify-content-between py-2 border-bottom border-secondary">
+                        <span class="text-muted">Known For</span>
+                        <span class="fw-bold text-end" style="max-width:60%;">{{ celeb.known_for }}</span>
+                    </li>
+                    {% endif %}
+                    <li class="d-flex justify-content-between py-2">
+                        <span class="text-muted">Category</span>
+                        <span class="badge bg-warning text-dark rounded-pill">{{ celeb.category }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Membership CTA -->
+            <div class="celeb-cta-card rounded-4 p-4 text-center">
+                <i class="fas fa-crown fa-3x text-warning mb-3"></i>
+                <h5 class="fw-bold mb-2">Get Exclusive Access</h5>
+                <p class="text-muted small mb-3">Purchase a membership to unlock exclusive experiences with {{ celeb.name }}.</p>
+                <a href="{{ url_for('membership.index') }}" class="btn btn-warning rounded-pill px-4 fw-bold w-100">
+                    View Memberships
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Related Celebrities -->
+{% if related %}
+<section class="container pb-5">
+    <h4 class="fw-bold mb-4">
+        <i class="fas fa-star text-warning me-2"></i>More {{ celeb.category }}
+    </h4>
+    <div class="row g-3">
+        {% for r in related %}
+        <div class="col-6 col-md-3">
+            <a href="{{ url_for('celebrities.detail', celeb_id=r.id) }}" class="text-decoration-none">
+                <div class="celeb-card text-center p-3 rounded-4 h-100">
+                    {% if r.image %}
+                    <img src="{{ url_for('static', filename=r.image) }}"
+                         alt="{{ r.name }}"
+                         class="celeb-img mx-auto mb-3"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="celeb-avatar mx-auto mb-3" style="display:none;">
+                        <i class="fas fa-user fa-2x text-warning"></i>
+                    </div>
+                    {% else %}
+                    <div class="celeb-avatar mx-auto mb-3">
+                        <i class="fas fa-user fa-2x text-warning"></i>
+                    </div>
+                    {% endif %}
+                    <h6 class="fw-bold mb-0 small text-white">{{ r.name }}</h6>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

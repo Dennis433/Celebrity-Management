@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Official Celebrity Management{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-lg-7">
+                <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill fw-semibold">
+                    <i class="fas fa-shield-alt me-1"></i> 100% Official & Verified
+                </span>
+                <h1 class="display-3 fw-bold text-white mb-4 lh-sm">
+                    The Official <br>
+                    <span class="text-warning">Celebrity</span> Management
+                </h1>
+                <p class="text-white-50 fs-5 mb-5">
+                    Your one and only destination for verified memberships,
+                    exclusive experiences and authentic merchandise.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('dashboard.index') }}" class="btn btn-warning btn-lg px-5 fw-bold rounded-pill">
+                            <i class="fas fa-tachometer-alt me-2"></i>Go to My Dashboard
+                        </a>
+                        <a href="{{ url_for('membership.index') }}" class="btn btn-outline-light btn-lg px-5 fw-bold rounded-pill">
+                            <i class="fas fa-id-card me-2"></i>View Memberships
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-warning btn-lg px-5 fw-bold rounded-pill">
+                            <i class="fas fa-user-plus me-2"></i>Join Now — It's Free
+                        </a>
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg px-5 fw-bold rounded-pill">
+                            <i class="fas fa-sign-in-alt me-2"></i>Member Login
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="d-flex gap-4 mt-5">
+                    <div class="text-white text-center">
+                        <h4 class="fw-bold text-warning mb-0">10K+</h4>
+                        <small class="text-white-50">Members</small>
+                    </div>
+                    <div class="vr bg-secondary"></div>
+                    <div class="text-white text-center">
+                        <h4 class="fw-bold text-warning mb-0">500+</h4>
+                        <small class="text-white-50">Experiences</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trust Bar -->
+<section class="bg-warning py-3">
+    <div class="container">
+        <div class="row text-center text-dark fw-semibold g-2">
+            <div class="col-6 col-md-3">
+                <i class="fas fa-lock me-2"></i>Secure Payments
+            </div>
+            <div class="col-6 col-md-3">
+                <i class="fas fa-certificate me-2"></i>100% Authentic
+            </div>
+            <div class="col-6 col-md-3">
+                <i class="fas fa-headset me-2"></i>24/7 Support
+            </div>
+            <div class="col-6 col-md-3">
+                <i class="fas fa-shipping-fast me-2"></i>Fast Delivery
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- What We Offer -->
+<section class="py-6 bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <span class="badge bg-dark text-warning px-3 py-2 rounded-pill mb-3">Our Services</span>
+            <h2 class="fw-bold fs-1">Everything You Need</h2>
+            <p class="text-muted fs-5 col-md-6 mx-auto">One platform for all your fan needs — official, verified and exclusive.</p>
+        </div>
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                <div class="service-card h-100 p-4 bg-white rounded-4 shadow-sm border-0">
+                    <div class="service-icon bg-warning rounded-3 p-3 d-inline-flex mb-4">
+                        <i class="fas fa-id-card fa-2x text-dark"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Membership Cards</h5>
+                    <p class="text-muted mb-4">Purchase an official verified membership card and unlock tiered perks, priority access and fan benefits.</p>
+                    <a href="{{ url_for('membership.index') }}" class="btn btn-dark rounded-pill px-4">Get a Card</a>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="service-card h-100 p-4 bg-dark text-white rounded-4 shadow border-0 position-relative overflow-hidden">
+                    <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-3">Popular</span>
+                    <div class="service-icon bg-warning rounded-3 p-3 d-inline-flex mb-4">
+                        <i class="fas fa-calendar-star fa-2x text-dark"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Book Experiences</h5>
+                    <p class="text-white-50 mb-4">Meet & greets, backstage passes, private sessions and more. Real moments with the artist — book yours today.</p>
+                    <a href="{{ url_for('experiences.index') }}" class="btn btn-warning rounded-pill px-4 text-dark fw-bold">Book Now</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Why Join -->
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3">Why Us</span>
+                <h2 class="fw-bold fs-1 mb-4">Why Join Official <br>Celebrity Management?</h2>
+                <div class="d-flex flex-column gap-3">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="bg-warning rounded-circle p-2 mt-1 flex-shrink-0">
+                            <i class="fas fa-check text-dark"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Priority Event Access</h6>
+                            <p class="text-muted mb-0 small">Get tickets before the general public. Members always go first.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="bg-warning rounded-circle p-2 mt-1 flex-shrink-0">
+                            <i class="fas fa-check text-dark"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Verified Official Membership</h6>
+                            <p class="text-muted mb-0 small">Your card is 100% official and issued directly by the management.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="bg-warning rounded-circle p-2 mt-1 flex-shrink-0">
+                            <i class="fas fa-check text-dark"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Exclusive Merch Drops</h6>
+                            <p class="text-muted mb-0 small">Members get early access to limited merchandise before anyone else.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="bg-warning rounded-circle p-2 mt-1 flex-shrink-0">
+                            <i class="fas fa-check text-dark"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Member Discounts</h6>
+                            <p class="text-muted mb-0 small">Save on bookings, merchandise and experiences across the platform.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="bg-warning rounded-circle p-2 mt-1 flex-shrink-0">
+                            <i class="fas fa-check text-dark"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Direct Management Updates</h6>
+                            <p class="text-muted mb-0 small">Be the first to know about announcements straight from the team.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="membership-preview bg-dark rounded-4 p-4 shadow-lg text-white">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="fw-bold fs-5">⭐ Official Celebrity Management</span>
+                        <span class="badge bg-warning text-dark">GOLD</span>
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-white-50 small mb-1">Member Name</p>
+                        <h5 class="fw-bold">Your Name Here</h5>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <p class="text-white-50 small mb-1">Member Since</p>
+                            <p class="fw-bold mb-0">2026</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="text-white-50 small mb-1">Member ID</p>
+                            <p class="fw-bold mb-0">#OCM-00001</p>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap mb-4">
+                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Priority Access</span>
+                        <span class="badge bg-secondary px-3 py-2 rounded-pill">Merch Discounts</span>
+                        <span class="badge bg-secondary px-3 py-2 rounded-pill">VIP Events</span>
+                    </div>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('membership.index') }}" class="btn btn-warning w-100 fw-bold rounded-pill">
+                            Get Your Card Now
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-warning w-100 fw-bold rounded-pill">
+                            Get Your Card Now
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Banner -->
+<section class="cta-section py-5 text-white text-center">
+    <div class="container py-4">
+        <h2 class="fw-bold display-5 mb-3">Ready to Become a Member?</h2>
+        <p class="text-white-50 fs-5 mb-4 col-md-6 mx-auto">Join thousands of verified members today. Free to sign up — premium experiences await.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard.index') }}" class="btn btn-warning btn-lg fw-bold px-5 rounded-pill shadow">
+                    <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                </a>
+                <a href="{{ url_for('membership.index') }}" class="btn btn-outline-light btn-lg px-5 rounded-pill">
+                    <i class="fas fa-id-card me-2"></i>View Memberships
+                </a>
+            {% else %}
+                <a href="{{ url_for('auth.register') }}" class="btn btn-warning btn-lg fw-bold px-5 rounded-pill shadow">
+                    <i class="fas fa-user-plus me-2"></i>Create Free Account
+                </a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg px-5 rounded-pill">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

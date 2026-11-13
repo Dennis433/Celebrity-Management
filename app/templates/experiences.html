@@ -1,0 +1,401 @@
+{% extends 'base.html' %}
+
+{% block title %}Experiences - Official Celebrity Management{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<section class="page-header text-white text-center py-5">
+    <div class="container py-4">
+        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3">
+            <i class="fas fa-star me-1"></i> Exclusive Experiences
+        </span>
+        <h1 class="display-4 fw-bold mb-3">Book a Real Experience</h1>
+        <p class="text-white-50 fs-5 col-md-6 mx-auto">
+            Meet & greets, backstage passes, private sessions and VIP events.
+            Every experience is 100% genuine and officially organized.
+        </p>
+    </div>
+</section>
+
+<!-- Experiences -->
+<section class="container py-5">
+    {% if experiences %}
+    <div class="row g-4">
+        {% for exp in experiences %}
+        <div class="col-md-6 col-lg-4">
+            <div class="experience-card h-100 rounded-4 overflow-hidden">
+                <div class="experience-img-placeholder d-flex align-items-center justify-content-center">
+                    <i class="fas fa-star fa-3x text-warning opacity-50"></i>
+                </div>
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="fw-bold mb-0">{{ exp.title }}</h5>
+                        <span class="badge bg-warning text-dark rounded-pill">${{ '%.2f' % exp.price }}</span>
+                    </div>
+                    <p class="text-muted small mb-3">{{ exp.description }}</p>
+                    <div class="d-flex flex-column gap-1 mb-4">
+                        {% if exp.date %}
+                        <small class="text-muted">
+                            <i class="fas fa-calendar text-warning me-2"></i>{{ exp.date.strftime('%d %B %Y') }}
+                        </small>
+                        {% endif %}
+                        {% if exp.location %}
+                        <small class="text-muted">
+                            <i class="fas fa-map-marker-alt text-warning me-2"></i>{{ exp.location }}
+                        </small>
+                        {% endif %}
+                        {% if exp.capacity %}
+                        <small class="text-muted">
+                            <i class="fas fa-users text-warning me-2"></i>{{ exp.capacity }} spots available
+                        </small>
+                        {% endif %}
+                    </div>
+                    <a href="{{ url_for('orders.book', package_key='meetgreet_standard') }}"
+                       class="btn btn-warning text-dark rounded-pill px-4 fw-bold w-100">
+                        <i class="fas fa-calendar-check me-2"></i>Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-4">
+            <div class="experience-card h-100 rounded-4 overflow-hidden">
+                <div class="experience-img-placeholder d-flex align-items-center justify-content-center">
+                    <i class="fas fa-handshake fa-3x text-warning opacity-50"></i>
+                </div>
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="fw-bold mb-0">Meet & Greet</h5>
+                        <span class="badge bg-warning text-dark rounded-pill">$199.99</span>
+                    </div>
+                    <p class="text-muted small mb-3">A personal one-on-one meeting with the artist. Get photos, autographs and a moment you will never forget.</p>
+                    <div class="d-flex flex-column gap-1 mb-4">
+                        <small class="text-muted"><i class="fas fa-calendar text-warning me-2"></i>Coming Soon</small>
+                        <small class="text-muted"><i class="fas fa-map-marker-alt text-warning me-2"></i>TBA</small>
+                        <small class="text-muted"><i class="fas fa-users text-warning me-2"></i>Limited spots</small>
+                    </div>
+                    <a href="{{ url_for('orders.book', package_key='meetgreet_standard') }}"
+                       class="btn btn-warning text-dark rounded-pill px-4 fw-bold w-100">
+                        <i class="fas fa-calendar-check me-2"></i>Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="experience-card experience-card-featured h-100 rounded-4 overflow-hidden">
+                <div class="experience-img-placeholder experience-img-featured d-flex align-items-center justify-content-center">
+                    <i class="fas fa-music fa-3x text-warning opacity-50"></i>
+                </div>
+                <div class="p-4">
+                    <span class="badge bg-warning text-dark rounded-pill mb-2">
+                        <i class="fas fa-fire me-1"></i> Hot
+                    </span>
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="fw-bold mb-0">VIP Meet & Greet</h5>
+                        <span class="badge bg-warning text-dark rounded-pill">$349.99</span>
+                    </div>
+                    <p class="text-muted small mb-3">Go behind the scenes. Watch sound checks, meet the crew and experience the magic before the show begins.</p>
+                    <div class="d-flex flex-column gap-1 mb-4">
+                        <small class="text-muted"><i class="fas fa-calendar text-warning me-2"></i>Coming Soon</small>
+                        <small class="text-muted"><i class="fas fa-map-marker-alt text-warning me-2"></i>TBA</small>
+                        <small class="text-muted"><i class="fas fa-users text-warning me-2"></i>Very limited spots</small>
+                    </div>
+                    <a href="{{ url_for('orders.book', package_key='meetgreet_vip') }}"
+                       class="btn btn-warning text-dark rounded-pill px-4 fw-bold w-100">
+                        <i class="fas fa-calendar-check me-2"></i>Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="experience-card h-100 rounded-4 overflow-hidden">
+                <div class="experience-img-placeholder d-flex align-items-center justify-content-center">
+                    <i class="fas fa-microphone fa-3x text-warning opacity-50"></i>
+                </div>
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="fw-bold mb-0">Private Session</h5>
+                        <span class="badge bg-warning text-dark rounded-pill">$999.99</span>
+                    </div>
+                    <p class="text-muted small mb-3">A completely private studio or performance session with the artist. The ultimate once in a lifetime experience.</p>
+                    <div class="d-flex flex-column gap-1 mb-4">
+                        <small class="text-muted"><i class="fas fa-calendar text-warning me-2"></i>By request</small>
+                        <small class="text-muted"><i class="fas fa-map-marker-alt text-warning me-2"></i>TBA</small>
+                        <small class="text-muted"><i class="fas fa-users text-warning me-2"></i>1 spot only</small>
+                    </div>
+                    <a href="{{ url_for('orders.book', package_key='meetgreet_private') }}"
+                       class="btn btn-warning text-dark rounded-pill px-4 fw-bold w-100">
+                        <i class="fas fa-calendar-check me-2"></i>Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="experience-card h-100 rounded-4 overflow-hidden">
+                <div class="experience-img-placeholder d-flex align-items-center justify-content-center">
+                    <i class="fas fa-plane fa-3x text-warning opacity-50"></i>
+                </div>
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="fw-bold mb-0">Celebrity Weekend Getaway</h5>
+                        <span class="badge bg-warning text-dark rounded-pill">$2,499.99</span>
+                    </div>
+                    <p class="text-muted small mb-3">An exclusive weekend vacation experience with the celebrity. Luxury stay, private dinner and exclusive activities.</p>
+                    <div class="d-flex flex-column gap-1 mb-4">
+                        <small class="text-muted"><i class="fas fa-calendar text-warning me-2"></i>By request</small>
+                        <small class="text-muted"><i class="fas fa-map-marker-alt text-warning me-2"></i>TBA</small>
+                        <small class="text-muted"><i class="fas fa-users text-warning me-2"></i>2 spots only</small>
+                    </div>
+                    <a href="{{ url_for('orders.book', package_key='vacation_weekend') }}"
+                       class="btn btn-warning text-dark rounded-pill px-4 fw-bold w-100">
+                        <i class="fas fa-calendar-check me-2"></i>Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="experience-card experience-card-featured h-100 rounded-4 overflow-hidden">
+                <div class="experience-img-placeholder experience-img-featured d-flex align-items-center justify-content-center">
+                    <i class="fas fa-crown fa-3x text-warning opacity-50"></i>
+                </div>
+                <div class="p-4">
+                    <span class="badge bg-warning text-dark rounded-pill mb-2">
+                        <i class="fas fa-crown me-1"></i> Ultimate
+                    </span>
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="fw-bold mb-0">VIP Vacation Experience</h5>
+                        <span class="badge bg-warning text-dark rounded-pill">$4,999.99</span>
+                    </div>
+                    <p class="text-muted small mb-3">A fully immersive VIP vacation alongside the celebrity. Private jet, luxury hotels and unforgettable memories.</p>
+                    <div class="d-flex flex-column gap-1 mb-4">
+                        <small class="text-muted"><i class="fas fa-calendar text-warning me-2"></i>By request</small>
+                        <small class="text-muted"><i class="fas fa-map-marker-alt text-warning me-2"></i>TBA</small>
+                        <small class="text-muted"><i class="fas fa-users text-warning me-2"></i>1 spot only</small>
+                    </div>
+                    <a href="{{ url_for('orders.book', package_key='vacation_vip') }}"
+                       class="btn btn-warning text-dark rounded-pill px-4 fw-bold w-100">
+                        <i class="fas fa-calendar-check me-2"></i>Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="experience-card h-100 rounded-4 overflow-hidden">
+                <div class="experience-img-placeholder d-flex align-items-center justify-content-center">
+                    <i class="fas fa-camera fa-3x text-warning opacity-50"></i>
+                </div>
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="fw-bold mb-0">Photo Session</h5>
+                        <span class="badge bg-warning text-dark rounded-pill">$149.99</span>
+                    </div>
+                    <p class="text-muted small mb-3">A professional photo session with the artist. Walk away with high quality official photographs as a keepsake.</p>
+                    <div class="d-flex flex-column gap-1 mb-4">
+                        <small class="text-muted"><i class="fas fa-calendar text-warning me-2"></i>By request</small>
+                        <small class="text-muted"><i class="fas fa-map-marker-alt text-warning me-2"></i>TBA</small>
+                        <small class="text-muted"><i class="fas fa-users text-warning me-2"></i>20 spots available</small>
+                    </div>
+                    <a href="{{ url_for('orders.book', package_key='meetgreet_standard') }}"
+                       class="btn btn-warning text-dark rounded-pill px-4 fw-bold w-100">
+                        <i class="fas fa-calendar-check me-2"></i>Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+</section>
+
+<!-- CTA -->
+<section class="cta-section py-5 text-white text-center">
+    <div class="container py-3">
+        <h2 class="fw-bold mb-3">Want Priority Booking?</h2>
+        <p class="text-white-50 mb-4">Gold and Platinum members get first access to all experiences before they sell out.</p>
+        <a href="{{ url_for('membership.index') }}" class="btn btn-warning btn-lg fw-bold px-5 rounded-pill">
+            <i class="fas fa-crown me-2"></i>Upgrade Membership
+        </a>
+    </div>
+</section>
+
+<!-- Chatbot -->
+<div class="chatbot-container" id="chatbot">
+    <div class="chatbot-header" onclick="toggleChat()">
+        <div class="d-flex align-items-center gap-2">
+            <div class="chatbot-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div>
+                <div class="fw-bold small">OCM Support</div>
+                <div class="chatbot-status">
+                    <span class="chatbot-dot"></span> Online
+                </div>
+            </div>
+        </div>
+        <i class="fas fa-chevron-down" id="chatToggleIcon"></i>
+    </div>
+    <div class="chatbot-body" id="chatBody">
+        <div class="chatbot-messages" id="chatMessages">
+            <div class="chat-message bot-message">
+                <div class="message-bubble">
+                    👋 Hi! I'm the OCM Support Bot. How can I help you today?
+                </div>
+            </div>
+            <div class="chat-quick-replies" id="quickReplies">
+                <button class="quick-reply-btn" onclick="askQuestion('How do I book an experience?')">How do I book?</button>
+                <button class="quick-reply-btn" onclick="askQuestion('What are the membership prices?')">Membership prices</button>
+                <button class="quick-reply-btn" onclick="askQuestion('How do payments work?')">How do payments work?</button>
+                <button class="quick-reply-btn" onclick="askQuestion('How do I contact support?')">Contact support</button>
+                <button class="quick-reply-btn" onclick="askQuestion('What experiences are available?')">What experiences?</button>
+                <button class="quick-reply-btn" onclick="askQuestion('Is this official?')">Is this official?</button>
+            </div>
+        </div>
+        <div class="chatbot-input-area">
+            <input type="text" id="chatInput" class="chatbot-input" placeholder="Type a message..."
+                   onkeypress="if(event.key==='Enter') sendMessage()">
+            <button class="chatbot-send-btn" onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<button class="chatbot-toggle-btn" id="chatToggleBtn" onclick="toggleChat()">
+    <i class="fas fa-comments fa-lg"></i>
+    <span class="chatbot-notification" id="chatNotification">1</span>
+</button>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+const faqs = {
+    'book': {
+        keywords: ['book', 'booking', 'reserve', 'how do i book', 'purchase', 'buy'],
+        answer: '📋 <strong>How to Book:</strong><br><br>1. Browse our experiences above<br>2. Click <strong>Book Now</strong> on your chosen package<br>3. Fill in your details on the booking form<br>4. Submit — your email will open pre-filled<br>5. Send the email to our team<br>6. We reply within 24hrs with payment instructions<br>7. Pay and your booking is confirmed! ✅'
+    },
+    'membership': {
+        keywords: ['membership', 'member', 'card', 'price', 'cost', 'how much', 'fee', 'subscription'],
+        answer: '💳 <strong>Membership Packages:</strong><br><br>🥈 <strong>Silver</strong> — $300/year<br>• Official membership card<br>• Fan club newsletter<br>• Member discounts<br><br>🥇 <strong>Gold</strong> — $375/year<br>• Everything in Silver<br>• Priority event access<br>• Early merch drops<br><br>💎 <strong>Platinum</strong> — $500/year<br>• Everything in Gold<br>• VIP invitations<br>• Meet & greet priority<br>• Signed merchandise<br><br><a href="/membership/" style="color:#ffc107;">View all plans →</a>'
+    },
+    'payment': {
+        keywords: ['payment', 'pay', 'how to pay', 'payment method', 'invoice', 'paypal', 'bank', 'transfer'],
+        answer: '💰 <strong>How Payments Work:</strong><br><br>1. Submit your booking request<br>2. Your email opens pre-filled with booking details<br>3. Send it to <strong>officialcelebritymanagement85@gmail.com</strong><br>4. Our team replies within <strong>24 hours</strong> with secure payment instructions<br>5. Complete payment via our secure method<br>6. Booking confirmed! 🎉<br><br>All transactions are secure and verified.'
+    },
+    'contact': {
+        keywords: ['contact', 'email', 'support', 'help', 'reach', 'talk', 'speak', 'customer service'],
+        answer: '📧 <strong>Contact Us:</strong><br><br>Email: <strong>officialcelebritymanagement85@gmail.com</strong><br><br>We respond to all enquiries within <strong>24 hours</strong>. For bookings, use our booking form for the fastest response. Our team is available Monday to Saturday.'
+    },
+    'experiences': {
+        keywords: ['experience', 'experiences', 'what is available', 'meet', 'greet', 'backstage', 'vacation', 'private session', 'vip'],
+        answer: '⭐ <strong>Available Experiences:</strong><br><br>🤝 <strong>Meet & Greet</strong> — $199.99<br>Personal one-on-one meeting, photos & autographs<br><br>🌟 <strong>VIP Meet & Greet</strong> — $349.99<br>Backstage access + extended time<br><br>🎙️ <strong>Private Session</strong> — $999.99<br>Fully private studio session<br><br>✈️ <strong>Weekend Getaway</strong> — $2,499.99<br>Luxury 2-night celebrity experience<br><br>👑 <strong>VIP Vacation</strong> — $4,999.99<br>5-night private jet & luxury experience<br><br>📸 <strong>Photo Session</strong> — $149.99<br>Professional photoshoot with the celebrity'
+    },
+    'official': {
+        keywords: ['official', 'legit', 'legitimate', 'real', 'fake', 'scam', 'trust', 'verified', 'genuine'],
+        answer: '✅ <strong>Yes, We Are 100% Official!</strong><br><br>Official Celebrity Management is a verified and authorized celebrity management platform. Every membership card, experience and booking is:<br><br>• <strong>100% authenticated</strong> and authorized<br>• Issued directly by our management team<br>• Verified before confirmation<br>• Backed by our guarantee<br><br>We have been managing celebrity fan experiences with full authorization. Your experience and membership are genuine and officially recognized.'
+    },
+    'refund': {
+        keywords: ['refund', 'cancel', 'cancellation', 'money back', 'return'],
+        answer: '🔄 <strong>Cancellation & Refunds:</strong><br><br>For cancellations and refund enquiries, please contact us directly at:<br><br><strong>officialcelebritymanagement85@gmail.com</strong><br><br>Include your booking reference number (e.g. #OCM-00001) in your email. Our team will review your request and respond within 24 hours with the available options.'
+    },
+    'celebrities': {
+        keywords: ['celebrity', 'celebrities', 'who', 'list', 'artist', 'singer', 'actor', 'wrestler', 'athlete'],
+        answer: '🌟 <strong>Our Celebrity Roster:</strong><br><br>We manage experiences for <strong>130+ world-class celebrities</strong> across:<br><br>🎵 Musicians & Singers (30)<br>🎬 Actors & Actresses (30)<br>⚽ Athletes & Sports (20)<br>📺 TV & Entertainment (20)<br>🤼 WWE Superstars (30)<br><br><a href="/celebrities/" style="color:#ffc107;">Browse all celebrities →</a>'
+    },
+    'delivery': {
+        keywords: ['delivery', 'shipping', 'card delivery', 'receive', 'when', 'how long'],
+        answer: '📬 <strong>Receiving Your Membership Card:</strong><br><br>After payment is confirmed:<br><br>• <strong>Digital card</strong> — available instantly in your dashboard<br>• <strong>Physical card</strong> — delivered within 7-14 business days<br>• A confirmation email is sent to your registered email address<br><br>For experience bookings, your confirmation details are sent by email after payment is verified.'
+    },
+    'greeting': {
+        keywords: ['hi', 'hello', 'hey', 'good morning', 'good evening', 'good afternoon', 'howdy', 'sup'],
+        answer: '👋 <strong>Hello!</strong> Welcome to Official Celebrity Management Support!<br><br>I can help you with:<br>• Booking experiences<br>• Membership information<br>• Payment questions<br>• General enquiries<br><br>What would you like to know?'
+    },
+    'thanks': {
+        keywords: ['thank', 'thanks', 'thank you', 'thx', 'ty', 'appreciate'],
+        answer: '😊 You\'re welcome! Is there anything else I can help you with? Feel free to ask any other questions about our experiences, memberships or bookings.'
+    },
+};
+
+let chatOpen = false;
+
+function toggleChat() {
+    const chatBody = document.getElementById('chatBody');
+    const toggleBtn = document.getElementById('chatToggleBtn');
+    const notification = document.getElementById('chatNotification');
+    const icon = document.getElementById('chatToggleIcon');
+
+    chatOpen = !chatOpen;
+
+    if (chatOpen) {
+        chatBody.style.display = 'flex';
+        toggleBtn.style.display = 'none';
+        notification.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        chatBody.style.display = 'none';
+        toggleBtn.style.display = 'flex';
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+function askQuestion(question) {
+    document.getElementById('chatInput').value = question;
+    sendMessage();
+}
+
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (!message) return;
+
+    addMessage(message, 'user');
+    input.value = '';
+
+    document.getElementById('quickReplies').style.display = 'none';
+
+    setTimeout(() => {
+        const response = getBotResponse(message);
+        addMessage(response, 'bot');
+    }, 600);
+}
+
+function addMessage(text, sender) {
+    const messages = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = `chat-message ${sender}-message`;
+    div.innerHTML = `<div class="message-bubble">${sender === 'user' ? text : text}</div>`;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function getBotResponse(message) {
+    const lower = message.toLowerCase();
+
+    for (const [key, faq] of Object.entries(faqs)) {
+        for (const keyword of faq.keywords) {
+            if (lower.includes(keyword)) {
+                return faq.answer;
+            }
+        }
+    }
+
+    return `🤔 I'm not sure about that specific question. For detailed assistance, please contact us directly:<br><br>📧 <strong>officialcelebritymanagement85@gmail.com</strong><br><br>Or try asking about:<br>• Booking an experience<br>• Membership prices<br>• Payment methods<br>• Our celebrity roster`;
+}
+
+// Show chat toggle button after 3 seconds
+setTimeout(() => {
+    document.getElementById('chatToggleBtn').style.display = 'flex';
+}, 3000);
+</script>
+{% endblock %}

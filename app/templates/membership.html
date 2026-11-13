@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% block title %}Membership - Official Celebrity Management{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<section class="page-header text-white text-center py-5">
+    <div class="container py-4">
+        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3">
+            <i class="fas fa-id-card me-1"></i> Official Memberships
+        </span>
+        <h1 class="display-4 fw-bold mb-3">Choose Your Membership</h1>
+        <p class="text-white-50 fs-5 col-md-6 mx-auto">
+            Join the official fan club and unlock exclusive perks, priority access and verified membership cards.
+        </p>
+    </div>
+</section>
+
+<!-- Cards -->
+<section class="container py-5">
+    {% if cards %}
+    <div class="row g-4 justify-content-center">
+        {% for card in cards %}
+        <div class="col-md-4">
+            <div class="membership-card h-100 rounded-4 p-4 text-center
+                {% if loop.index == 2 %}membership-card-featured{% endif %}">
+
+                {% if loop.index == 2 %}
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3">
+                    <i class="fas fa-crown me-1"></i> Most Popular
+                </span>
+                {% endif %}
+
+                <div class="membership-card-icon mb-3">
+                    {% if loop.index == 1 %}
+                        <i class="fas fa-id-card fa-3x text-warning"></i>
+                    {% elif loop.index == 2 %}
+                        <i class="fas fa-crown fa-3x text-warning"></i>
+                    {% else %}
+                        <i class="fas fa-gem fa-3x text-warning"></i>
+                    {% endif %}
+                </div>
+
+                <h4 class="fw-bold mb-2">{{ card.name }}</h4>
+                <p class="text-muted mb-3">{{ card.description }}</p>
+
+                <div class="price-tag mb-4">
+                    <span class="display-5 fw-bold text-warning">${{ '%.2f' % card.price }}</span>
+                    <span class="text-muted">/ {{ card.duration_days }} days</span>
+                </div>
+
+                {% if card.perks %}
+                <ul class="list-unstyled text-start mb-4">
+                    {% for perk in card.perks.split(',') %}
+                    <li class="mb-2">
+                        <i class="fas fa-check-circle text-warning me-2"></i>{{ perk.strip() }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <a href="{{ url_for('orders.book', package_key='membership_silver' if loop.index == 1 else 'membership_gold' if loop.index == 2 else 'membership_platinum') }}"
+                   class="btn {% if loop.index == 2 %}btn-warning text-dark{% else %}btn-outline-warning{% endif %} rounded-pill px-4 fw-bold w-100">
+                    <i class="fas fa-shopping-cart me-2"></i>Buy Now
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <!-- Placeholder tiers -->
+    <div class="row g-4 justify-content-center">
+
+        <!-- Silver -->
+        <div class="col-md-4">
+            <div class="membership-card h-100 rounded-4 p-4 text-center">
+                <div class="membership-card-icon mb-3">
+                    <i class="fas fa-id-card fa-3x text-warning"></i>
+                </div>
+                <h4 class="fw-bold mb-2">Silver</h4>
+                <p class="text-muted mb-3">Perfect for new fans joining the official club.</p>
+                <div class="price-tag mb-4">
+                    <span class="display-5 fw-bold text-warning">$300.00</span>
+                    <span class="text-muted">/ 365 days</span>
+                </div>
+                <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Official membership card</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Fan club newsletter</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Member discounts</li>
+                </ul>
+                <a href="{{ url_for('orders.book', package_key='membership_silver') }}"
+                   class="btn btn-outline-warning rounded-pill px-4 fw-bold w-100">
+                    <i class="fas fa-shopping-cart me-2"></i>Buy Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Gold -->
+        <div class="col-md-4">
+            <div class="membership-card membership-card-featured h-100 rounded-4 p-4 text-center">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3">
+                    <i class="fas fa-crown me-1"></i> Most Popular
+                </span>
+                <div class="membership-card-icon mb-3">
+                    <i class="fas fa-crown fa-3x text-warning"></i>
+                </div>
+                <h4 class="fw-bold mb-2">Gold</h4>
+                <p class="text-muted mb-3">For dedicated fans who want priority access.</p>
+                <div class="price-tag mb-4">
+                    <span class="display-5 fw-bold text-warning">$375.00</span>
+                    <span class="text-muted">/ 365 days</span>
+                </div>
+                <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Everything in Silver</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Priority event access</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Early merch drops</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Exclusive content</li>
+                </ul>
+                <a href="{{ url_for('orders.book', package_key='membership_gold') }}"
+                   class="btn btn-warning text-dark rounded-pill px-4 fw-bold w-100">
+                    <i class="fas fa-shopping-cart me-2"></i>Buy Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Platinum -->
+        <div class="col-md-4">
+            <div class="membership-card h-100 rounded-4 p-4 text-center">
+                <div class="membership-card-icon mb-3">
+                    <i class="fas fa-gem fa-3x text-warning"></i>
+                </div>
+                <h4 class="fw-bold mb-2">Platinum</h4>
+                <p class="text-muted mb-3">The ultimate fan experience — VIP all the way.</p>
+                <div class="price-tag mb-4">
+                    <span class="display-5 fw-bold text-warning">$500.00</span>
+                    <span class="text-muted">/ 365 days</span>
+                </div>
+                <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Everything in Gold</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>VIP event invitations</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Meet & greet priority</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Signed merchandise</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Direct management updates</li>
+                </ul>
+                <a href="{{ url_for('orders.book', package_key='membership_platinum') }}"
+                   class="btn btn-outline-warning rounded-pill px-4 fw-bold w-100">
+                    <i class="fas fa-shopping-cart me-2"></i>Buy Now
+                </a>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+</section>
+
+<!-- FAQ -->
+<section class="container pb-5">
+    <div class="col-md-8 mx-auto">
+        <h3 class="fw-bold text-center mb-4">Frequently Asked Questions</h3>
+        <div class="accordion accordion-flush" id="faqAccordion">
+
+            <div class="accordion-item faq-item mb-3 rounded-3 overflow-hidden">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                        Is my membership card official?
+                    </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-muted">
+                        Yes. Every membership card issued through Official Celebrity Management is 100% verified and authorized directly by the management team.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item faq-item mb-3 rounded-3 overflow-hidden">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                        Can I upgrade my membership?
+                    </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-muted">
+                        Yes. You can upgrade your membership at any time from your account dashboard. The price difference will be calculated automatically.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item faq-item mb-3 rounded-3 overflow-hidden">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                        How do I receive my membership card?
+                    </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-muted">
+                        Your digital membership card is available instantly in your account dashboard after purchase. A physical card can be requested separately.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item faq-item mb-3 rounded-3 overflow-hidden">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                        How do payments work?
+                    </button>
+                </h2>
+                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-muted">
+                        After submitting your booking request, our team will send you payment instructions via email within 24 hours. Your booking is confirmed once payment is received.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}
