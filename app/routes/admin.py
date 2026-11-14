@@ -4,6 +4,8 @@ from app import db
 from app.models import User, MembershipCard, Membership, Experience, Booking, Celebrity
 from functools import wraps
 import os
+import cloudinary
+import cloudinary.uploader
 from werkzeug.utils import secure_filename
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
@@ -21,6 +23,22 @@ def admin_required(f):
             return redirect(url_for('main.index'))
         return f(*args, **kwargs)
     return decorated_function
+
+def upload_to_cloudinary(file, folder='celebrities'):
+    """Upload file to Cloudinary and return URL"""
+    try:
+        result = cloudinary.uploader.upload(
+            file,
+            folder=f'ocm/{folder}',
+            transformation=[
+                {'width': 400, 'height': 400, 'crop': 'fill', 'gravity': 'face'},
+                {'quality': 'auto', 'fetch_format': 'auto'}
+            ]
+        )
+        return result.get('secure_url')
+    except Exception as e:
+        print(f'Cloudinary upload error: {e}')
+        return None
 
 @bp.route('/')
 @login_required
@@ -146,15 +164,24 @@ def upload_celebrity_image(celeb_id):
         flash('No file selected.', 'danger')
         return redirect(url_for('admin.celebrities'))
     if file and allowed_file(file.filename):
-        ext = file.filename.rsplit('.', 1)[1].lower()
-        slug = celeb.name.lower().replace(' ', '-').replace('.', '').replace("'", '')
-        filename = f'{slug}.{ext}'
-        save_path = os.path.join('app', 'static', 'images', 'celebrities', filename)
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        file.save(save_path)
-        celeb.image = f'images/celebrities/{filename}'
-        db.session.commit()
-        flash(f'Image updated for {celeb.name}.', 'success')
+        # Try Cloudinary first
+        cloudinary_url = upload_to_cloudinary(file, folder='celebrities')
+        if cloudinary_url:
+            celeb.image = cloudinary_url
+            db.session.commit()
+            flash(f'Image uploaded to cloud for {celeb.name}.', 'success')
+        else:
+            # Fallback to local storage
+            ext = file.filename.rsplit('.', 1)[1].lower()
+            slug = celeb.name.lower().replace(' ', '-').replace('.', '').replace("'", '')
+            filename = f'{slug}.{ext}'
+            save_path = os.path.join('app', 'static', 'images', 'celebrities', filename)
+            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            file.seek(0)
+            file.save(save_path)
+            celeb.image = f'images/celebrities/{filename}'
+            db.session.commit()
+            flash(f'Image saved locally for {celeb.name}.', 'success')
     else:
         flash('Invalid file type. Use jpg, jpeg, png or webp.', 'danger')
     return redirect(url_for('admin.celebrities'))
@@ -165,9 +192,11 @@ def upload_celebrity_image(celeb_id):
 def delete_celebrity_image(celeb_id):
     celeb = Celebrity.query.get_or_404(celeb_id)
     if celeb.image:
-        file_path = os.path.join('app', 'static', celeb.image)
-        if os.path.exists(file_path):
-            os.remove(file_path)
+        # Only delete local files, not Cloudinary URLs
+        if not celeb.image.startswith('http'):
+            file_path = os.path.join('app', 'static', celeb.image)
+            if os.path.exists(file_path):
+                os.remove(file_path)
         celeb.image = None
         db.session.commit()
         flash(f'Image removed for {celeb.name}.', 'success')
@@ -185,6 +214,16 @@ def edit_celebrity(celeb_id):
         celeb.born = request.form.get('born')
         celeb.known_for = request.form.get('known_for')
         db.session.commit()
+
+        # Handle image upload
+        if 'image' in request.files:
+            file = request.files['image']
+            if file and file.filename != '' and allowed_file(file.filename):
+                cloudinary_url = upload_to_cloudinary(file, folder='celebrities')
+                if cloudinary_url:
+                    celeb.image = cloudinary_url
+                    db.session.commit()
+
         flash(f'Profile updated for {celeb.name}.', 'success')
         return redirect(url_for('admin.celebrities'))
     return render_template('admin/edit_celebrity.html', celeb=celeb)

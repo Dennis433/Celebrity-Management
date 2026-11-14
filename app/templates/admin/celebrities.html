@@ -70,7 +70,7 @@
                     <th>Photo</th>
                     <th>Name</th>
                     <th>Category</th>
-                    <th>Status</th>
+                    <th>Image Status</th>
                     <th>Upload Image</th>
                     <th>Actions</th>
                 </tr>
@@ -80,10 +80,13 @@
                 <tr>
                     <td>
                         {% if celeb.image %}
-                        <img src="{{ url_for('static', filename=celeb.image) }}"
+                        <img src="{{ celeb.image if celeb.image.startswith('http') else url_for('static', filename=celeb.image) }}"
                              alt="{{ celeb.name }}"
                              class="admin-celeb-img"
-                             onerror="this.style.display='none';">
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="admin-celeb-placeholder" style="display:none;">
+                            <i class="fas fa-user text-warning"></i>
+                        </div>
                         {% else %}
                         <div class="admin-celeb-placeholder">
                             <i class="fas fa-user text-warning"></i>
@@ -92,13 +95,23 @@
                     </td>
                     <td class="fw-bold">{{ celeb.name }}</td>
                     <td>
-                        <span class="badge bg-dark text-warning rounded-pill">{{ celeb.category }}</span>
+                        <span class="badge bg-dark text-warning rounded-pill small">{{ celeb.category }}</span>
                     </td>
                     <td>
                         {% if celeb.image %}
-                            <span class="badge bg-success rounded-pill">Has Image</span>
+                            {% if celeb.image.startswith('http') %}
+                                <span class="badge bg-success rounded-pill">
+                                    <i class="fas fa-cloud me-1"></i>Cloud
+                                </span>
+                            {% else %}
+                                <span class="badge bg-info rounded-pill">
+                                    <i class="fas fa-server me-1"></i>Local
+                                </span>
+                            {% endif %}
                         {% else %}
-                            <span class="badge bg-danger rounded-pill">No Image</span>
+                            <span class="badge bg-danger rounded-pill">
+                                <i class="fas fa-times me-1"></i>Missing
+                            </span>
                         {% endif %}
                     </td>
                     <td>
@@ -110,27 +123,30 @@
                                    name="image"
                                    accept=".jpg,.jpeg,.png,.webp"
                                    class="form-control form-control-sm"
-                                   style="max-width: 200px;">
+                                   style="max-width: 180px;">
                             <button type="submit" class="btn btn-warning btn-sm rounded-pill px-3 fw-bold">
-                                <i class="fas fa-upload me-1"></i>Upload
+                                <i class="fas fa-cloud-upload-alt me-1"></i>Upload
                             </button>
                         </form>
                     </td>
                     <td>
                         <div class="d-flex gap-2">
                             <a href="{{ url_for('admin.edit_celebrity', celeb_id=celeb.id) }}"
-                               class="btn btn-sm btn-warning rounded-pill px-3">
+                               class="btn btn-sm btn-warning rounded-pill px-3"
+                               title="Edit Profile">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <a href="{{ url_for('celebrities.detail', celeb_id=celeb.id) }}"
                                class="btn btn-sm btn-outline-warning rounded-pill px-3"
-                               target="_blank">
+                               target="_blank"
+                               title="View Profile">
                                 <i class="fas fa-eye"></i>
                             </a>
                             {% if celeb.image %}
                             <a href="{{ url_for('admin.delete_celebrity_image', celeb_id=celeb.id) }}"
                                class="btn btn-sm btn-outline-danger rounded-pill px-3"
-                               onclick="return confirm('Remove image for {{ celeb.name }}?')">
+                               onclick="return confirm('Remove image for {{ celeb.name }}?')"
+                               title="Remove Image">
                                 <i class="fas fa-trash"></i>
                             </a>
                             {% endif %}

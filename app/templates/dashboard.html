@@ -3,28 +3,24 @@
 {% block title %}My Dashboard - Official Celebrity Management{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-4">
 
     <!-- Welcome Header -->
-    <div class="dashboard-header rounded-4 p-4 mb-4">
-        <div class="row align-items-center">
+    <div class="dashboard-header rounded-4 p-3 p-md-4 mb-4">
+        <div class="row align-items-center g-3">
             <div class="col-auto">
                 <div class="avatar-circle">
-                    <i class="fas fa-user fa-2x text-warning"></i>
+                    <i class="fas fa-user fa-lg text-warning"></i>
                 </div>
             </div>
             <div class="col">
-                <h3 class="fw-bold mb-1">Welcome back, {{ current_user.full_name }}!</h3>
-                <p class="text-muted mb-0">
+                <h4 class="fw-bold mb-1 fs-5">Welcome back, {{ current_user.full_name }}!</h4>
+                <p class="text-muted mb-0 small">
                     <i class="fas fa-envelope me-1"></i>{{ current_user.email }}
-                    &nbsp;&nbsp;
-                    <i class="fas fa-calendar me-1"></i>Member since {{ current_user.created_at.strftime('%B %Y') }}
+                    <span class="d-none d-md-inline">
+                        &nbsp;&nbsp;<i class="fas fa-calendar me-1"></i>Member since {{ current_user.created_at.strftime('%B %Y') }}
+                    </span>
                 </p>
-            </div>
-            <div class="col-auto">
-                <a href="#" class="btn btn-warning rounded-pill px-4 fw-bold">
-                    <i class="fas fa-edit me-2"></i>Edit Profile
-                </a>
             </div>
         </div>
     </div>
@@ -32,21 +28,21 @@
     <!-- Stats Row -->
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-4">
-            <div class="stat-card text-center p-4 rounded-4">
+            <div class="stat-card text-center p-3 rounded-4">
                 <i class="fas fa-id-card fa-2x text-warning mb-2"></i>
                 <h4 class="fw-bold mb-0">{{ memberships|length }}</h4>
                 <small class="text-muted">Memberships</small>
             </div>
         </div>
         <div class="col-6 col-md-4">
-            <div class="stat-card text-center p-4 rounded-4">
+            <div class="stat-card text-center p-3 rounded-4">
                 <i class="fas fa-calendar-check fa-2x text-warning mb-2"></i>
                 <h4 class="fw-bold mb-0">{{ bookings|length }}</h4>
                 <small class="text-muted">Bookings</small>
             </div>
         </div>
-        <div class="col-6 col-md-4">
-            <div class="stat-card text-center p-4 rounded-4">
+        <div class="col-12 col-md-4">
+            <div class="stat-card text-center p-3 rounded-4">
                 <i class="fas fa-star fa-2x text-warning mb-2"></i>
                 <h4 class="fw-bold mb-0">Gold</h4>
                 <small class="text-muted">Member Tier</small>
@@ -57,19 +53,24 @@
     <div class="row g-4">
 
         <!-- Memberships -->
-        <div class="col-lg-6">
-            <div class="dash-card rounded-4 p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-bold mb-0"><i class="fas fa-id-card text-warning me-2"></i>My Memberships</h5>
-                    <a href="{{ url_for('membership.index') }}" class="btn btn-sm btn-warning rounded-pill px-3">Get One</a>
+        <div class="col-12 col-lg-6">
+            <div class="dash-card rounded-4 p-3 p-md-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0 fs-6">
+                        <i class="fas fa-id-card text-warning me-2"></i>My Memberships
+                    </h5>
+                    <a href="{{ url_for('membership.index') }}"
+                       class="btn btn-sm btn-warning rounded-pill px-3">Get One</a>
                 </div>
                 {% if memberships %}
                     {% for m in memberships %}
                     <div class="membership-item p-3 rounded-3 mb-2">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="fw-bold mb-1">{{ m.card.name }}</h6>
-                                <small class="text-muted">Expires: {{ m.expires_at.strftime('%d %b %Y') if m.expires_at else 'N/A' }}</small>
+                                <h6 class="fw-bold mb-1 small">{{ m.card.name }}</h6>
+                                <small class="text-muted">
+                                    Expires: {{ m.expires_at.strftime('%d %b %Y') if m.expires_at else 'N/A' }}
+                                </small>
                             </div>
                             <span class="badge {% if m.is_active %}bg-success{% else %}bg-danger{% endif %} rounded-pill">
                                 {{ 'Active' if m.is_active else 'Expired' }}
@@ -80,37 +81,44 @@
                 {% else %}
                     <div class="empty-state text-center py-4">
                         <i class="fas fa-id-card fa-3x text-muted mb-3"></i>
-                        <p class="text-muted mb-3">No memberships yet</p>
-                        <a href="{{ url_for('membership.index') }}" class="btn btn-warning rounded-pill px-4 fw-bold">Browse Plans</a>
+                        <p class="text-muted mb-3 small">No memberships yet</p>
+                        <a href="{{ url_for('membership.index') }}"
+                           class="btn btn-warning rounded-pill px-4 fw-bold">Browse Plans</a>
                     </div>
                 {% endif %}
             </div>
         </div>
 
         <!-- Bookings -->
-        <div class="col-lg-6">
-            <div class="dash-card rounded-4 p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-bold mb-0"><i class="fas fa-calendar-check text-warning me-2"></i>My Bookings</h5>
-                    <a href="{{ url_for('experiences.index') }}" class="btn btn-sm btn-warning rounded-pill px-3">Book Now</a>
+        <div class="col-12 col-lg-6">
+            <div class="dash-card rounded-4 p-3 p-md-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0 fs-6">
+                        <i class="fas fa-calendar-check text-warning me-2"></i>My Bookings
+                    </h5>
+                    <a href="{{ url_for('experiences.index') }}"
+                       class="btn btn-sm btn-warning rounded-pill px-3">Book Now</a>
                 </div>
                 {% if bookings %}
                     {% for b in bookings %}
                     <div class="membership-item p-3 rounded-3 mb-2">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="fw-bold mb-1">{{ b.experience.title }}</h6>
+                                <h6 class="fw-bold mb-1 small">{{ b.experience.title }}</h6>
                                 <small class="text-muted">{{ b.booked_at.strftime('%d %b %Y') }}</small>
                             </div>
-                            <span class="badge bg-warning text-dark rounded-pill">{{ b.status|capitalize }}</span>
+                            <span class="badge bg-warning text-dark rounded-pill">
+                                {{ b.status|capitalize }}
+                            </span>
                         </div>
                     </div>
                     {% endfor %}
                 {% else %}
                     <div class="empty-state text-center py-4">
-                        <i class="fas fa-calendar-star fa-3x text-muted mb-3"></i>
-                        <p class="text-muted mb-3">No bookings yet</p>
-                        <a href="{{ url_for('experiences.index') }}" class="btn btn-warning rounded-pill px-4 fw-bold">View Experiences</a>
+                        <i class="fas fa-calendar fa-3x text-muted mb-3"></i>
+                        <p class="text-muted mb-3 small">No bookings yet</p>
+                        <a href="{{ url_for('experiences.index') }}"
+                           class="btn btn-warning rounded-pill px-4 fw-bold">View Experiences</a>
                     </div>
                 {% endif %}
             </div>

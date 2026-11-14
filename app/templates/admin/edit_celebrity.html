@@ -7,88 +7,194 @@
     <h3 class="fw-bold mb-0">
         <i class="fas fa-edit text-warning me-2"></i>Edit — {{ celeb.name }}
     </h3>
-    <a href="{{ url_for('admin.celebrities') }}" class="btn btn-outline-warning rounded-pill px-4">
-        <i class="fas fa-arrow-left me-2"></i>Back
-    </a>
+    <div class="d-flex gap-2">
+        <a href="{{ url_for('celebrities.detail', celeb_id=celeb.id) }}"
+           class="btn btn-outline-warning rounded-pill px-4"
+           target="_blank">
+            <i class="fas fa-eye me-2"></i>Preview
+        </a>
+        <a href="{{ url_for('admin.celebrities') }}" class="btn btn-outline-warning rounded-pill px-4">
+            <i class="fas fa-arrow-left me-2"></i>Back
+        </a>
+    </div>
 </div>
 
 <div class="row g-4">
-    <div class="col-lg-4 text-center">
-        <div class="dash-card rounded-4 p-4">
+
+    <!-- Left — Image -->
+    <div class="col-lg-4">
+        <div class="dash-card rounded-4 p-4 text-center mb-4">
+            <h6 class="fw-bold mb-3 text-warning">
+                <i class="fas fa-camera me-2"></i>Profile Photo
+            </h6>
             {% if celeb.image %}
-            <img src="{{ url_for('static', filename=celeb.image) }}"
+            <img src="{{ celeb.image if celeb.image.startswith('http') else url_for('static', filename=celeb.image) }}"
                  alt="{{ celeb.name }}"
                  class="rounded-circle mb-3"
-                 style="width:150px; height:150px; object-fit:cover; border: 3px solid rgba(255,193,7,0.4);">
+                 style="width:160px; height:160px; object-fit:cover; border: 3px solid rgba(255,193,7,0.4);"
+                 onerror="this.style.display='none';">
             {% else %}
-            <div class="celeb-avatar mx-auto mb-3" style="width:150px; height:150px; font-size:3rem;">
+            <div class="celeb-avatar mx-auto mb-3"
+                 style="width:160px; height:160px; font-size:3rem;">
                 <i class="fas fa-user text-warning"></i>
             </div>
             {% endif %}
-            <h5 class="fw-bold">{{ celeb.name }}</h5>
-            <span class="badge bg-warning text-dark rounded-pill">{{ celeb.category }}</span>
 
-            <!-- Upload Image -->
+            <h5 class="fw-bold">{{ celeb.name }}</h5>
+            <span class="badge bg-warning text-dark rounded-pill mb-3">{{ celeb.category }}</span>
+
+            {% if celeb.image %}
+                {% if celeb.image.startswith('http') %}
+                <div class="mb-3">
+                    <span class="badge bg-success rounded-pill px-3 py-2">
+                        <i class="fas fa-cloud me-1"></i>Stored on Cloudinary
+                    </span>
+                </div>
+                {% else %}
+                <div class="mb-3">
+                    <span class="badge bg-info rounded-pill px-3 py-2">
+                        <i class="fas fa-server me-1"></i>Stored Locally
+                    </span>
+                </div>
+                {% endif %}
+            {% endif %}
+
+            <!-- Upload Image Form -->
             <form method="POST"
                   action="{{ url_for('admin.upload_celebrity_image', celeb_id=celeb.id) }}"
-                  enctype="multipart/form-data"
-                  class="mt-4">
+                  enctype="multipart/form-data">
                 <div class="mb-3">
-                    <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp" class="form-control form-control-sm">
+                    <input type="file"
+                           name="image"
+                           accept=".jpg,.jpeg,.png,.webp"
+                           class="form-control form-control-sm">
+                    <small class="text-muted">JPG, PNG or WEBP. Max 16MB.</small>
                 </div>
                 <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold w-100">
-                    <i class="fas fa-upload me-2"></i>Upload Photo
+                    <i class="fas fa-cloud-upload-alt me-2"></i>Upload to Cloud
                 </button>
             </form>
+
+            {% if celeb.image %}
+            <a href="{{ url_for('admin.delete_celebrity_image', celeb_id=celeb.id) }}"
+               class="btn btn-outline-danger rounded-pill px-4 mt-2 w-100 btn-sm"
+               onclick="return confirm('Remove image for {{ celeb.name }}?')">
+                <i class="fas fa-trash me-2"></i>Remove Image
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="dash-card rounded-4 p-4">
+            <h6 class="fw-bold mb-3 text-warning">
+                <i class="fas fa-info-circle me-2"></i>Current Info
+            </h6>
+            <ul class="list-unstyled mb-0">
+                <li class="py-2 border-bottom border-secondary d-flex justify-content-between">
+                    <small class="text-muted">Net Worth</small>
+                    <small class="fw-bold text-warning">{{ celeb.net_worth or 'Not set' }}</small>
+                </li>
+                <li class="py-2 border-bottom border-secondary d-flex justify-content-between">
+                    <small class="text-muted">Nationality</small>
+                    <small class="fw-bold">{{ celeb.nationality or 'Not set' }}</small>
+                </li>
+                <li class="py-2 border-bottom border-secondary d-flex justify-content-between">
+                    <small class="text-muted">Born</small>
+                    <small class="fw-bold">{{ celeb.born or 'Not set' }}</small>
+                </li>
+                <li class="py-2 d-flex justify-content-between">
+                    <small class="text-muted">Biography</small>
+                    <small class="fw-bold">
+                        {% if celeb.bio %}
+                            <span class="badge bg-success rounded-pill">Added</span>
+                        {% else %}
+                            <span class="badge bg-danger rounded-pill">Missing</span>
+                        {% endif %}
+                    </small>
+                </li>
+            </ul>
         </div>
     </div>
 
+    <!-- Right — Edit Form -->
     <div class="col-lg-8">
         <div class="dash-card rounded-4 p-4">
+            <h5 class="fw-bold mb-4">
+                <i class="fas fa-user-edit text-warning me-2"></i>Edit Profile Details
+            </h5>
             <form method="POST">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label">Net Worth</label>
-                        <input type="text" name="net_worth" class="form-control"
+                        <label class="form-label">
+                            <i class="fas fa-dollar-sign text-warning me-1"></i>Net Worth
+                        </label>
+                        <input type="text"
+                               name="net_worth"
+                               class="form-control"
                                placeholder="e.g. $300 Million"
                                value="{{ celeb.net_worth or '' }}">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Nationality</label>
-                        <input type="text" name="nationality" class="form-control"
+                        <label class="form-label">
+                            <i class="fas fa-globe text-warning me-1"></i>Nationality
+                        </label>
+                        <input type="text"
+                               name="nationality"
+                               class="form-control"
                                placeholder="e.g. American"
                                value="{{ celeb.nationality or '' }}">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Date of Birth</label>
-                        <input type="text" name="born" class="form-control"
+                        <label class="form-label">
+                            <i class="fas fa-birthday-cake text-warning me-1"></i>Date of Birth
+                        </label>
+                        <input type="text"
+                               name="born"
+                               class="form-control"
                                placeholder="e.g. October 18, 1989"
                                value="{{ celeb.born or '' }}">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Known For</label>
-                        <input type="text" name="known_for" class="form-control"
+                        <label class="form-label">
+                            <i class="fas fa-star text-warning me-1"></i>Known For
+                        </label>
+                        <input type="text"
+                               name="known_for"
+                               class="form-control"
                                placeholder="e.g. Singing, Acting"
                                value="{{ celeb.known_for or '' }}">
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Biography</label>
-                        <textarea name="bio" class="form-control" rows="10"
-                                  placeholder="Write a detailed biography...">{{ celeb.bio or '' }}</textarea>
-                        <small class="text-muted">Use new lines to separate paragraphs.</small>
+                        <label class="form-label">
+                            <i class="fas fa-align-left text-warning me-1"></i>Biography
+                        </label>
+                        <textarea name="bio"
+                                  class="form-control"
+                                  rows="12"
+                                  placeholder="Write a detailed biography here. Use new lines to separate paragraphs.">{{ celeb.bio or '' }}</textarea>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Use new lines to separate paragraphs. Each paragraph will be displayed separately on the profile page.
+                        </small>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 d-flex gap-3 flex-wrap">
                         <button type="submit" class="btn btn-warning rounded-pill px-5 fw-bold">
                             <i class="fas fa-save me-2"></i>Save Changes
                         </button>
                         <a href="{{ url_for('celebrities.detail', celeb_id=celeb.id) }}"
-                           class="btn btn-outline-warning rounded-pill px-4 ms-2" target="_blank">
-                            <i class="fas fa-eye me-2"></i>Preview
+                           class="btn btn-outline-warning rounded-pill px-4"
+                           target="_blank">
+                            <i class="fas fa-eye me-2"></i>Preview Profile
+                        </a>
+                        <a href="{{ url_for('admin.celebrities') }}"
+                           class="btn btn-outline-secondary rounded-pill px-4">
+                            <i class="fas fa-times me-2"></i>Cancel
                         </a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
 </div>
 {% endblock %}

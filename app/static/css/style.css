@@ -30,23 +30,32 @@ body {
 
 /* Navbar */
 .navbar {
-    padding: 1rem 0;
+    padding: 0.75rem 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     background-color: #0a0a0a !important;
 }
 
 .navbar-brand {
-    font-size: 1.2rem;
+    font-size: 1rem;
     letter-spacing: 0.5px;
 }
 
 .nav-link {
     color: #cccccc !important;
     transition: color 0.2s ease;
+    padding: 0.5rem 0.75rem !important;
 }
 
 .nav-link:hover {
     color: #ffc107 !important;
+}
+
+.navbar-toggler {
+    border-color: rgba(255,193,7,0.3) !important;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.25rem rgba(255,193,7,0.15) !important;
 }
 
 /* Hero */
@@ -55,6 +64,9 @@ body {
     min-height: 92vh;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 6rem 0 4rem;
 }
 
 .hero-section::after {
@@ -216,14 +228,15 @@ footer {
 }
 
 .avatar-circle {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     background: rgba(255,193,7,0.1);
     border: 2px solid rgba(255,193,7,0.3);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .stat-card {
@@ -254,6 +267,10 @@ footer {
 
 .empty-state i {
     opacity: 0.4;
+}
+
+.table-responsive {
+    -webkit-overflow-scrolling: touch;
 }
 
 .table-dark {
@@ -349,7 +366,7 @@ footer {
 }
 
 .experience-img-placeholder {
-    height: 200px;
+    height: 180px;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     border-bottom: 1px solid #2a2a2a;
 }
@@ -362,6 +379,7 @@ footer {
 .admin-sidebar {
     background-color: #0a0a0a;
     border-right: 1px solid #1e1e1e;
+    min-height: 100vh;
 }
 
 .admin-nav-link {
@@ -369,6 +387,8 @@ footer {
     border-radius: 8px;
     padding: 0.6rem 1rem;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
 }
 
 .admin-nav-link:hover {
@@ -386,7 +406,7 @@ footer {
 .celeb-card {
     background: #1a1a1a;
     border: 1px solid #2a2a2a;
-    transition: transform 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .celeb-card:hover {
@@ -395,6 +415,61 @@ footer {
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
+.celeb-img-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255,193,7,0.4);
+    position: relative;
+    margin: 0 auto;
+}
+
+.celeb-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.celeb-initials {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 2px solid rgba(255,193,7,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffc107;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 auto;
+}
+
+.celeb-name {
+    font-size: 0.78rem;
+    line-height: 1.2;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f0f0f0;
+}
+
+.celeb-cat-badge {
+    font-size: 0.6rem;
+}
+
+.celeb-btn {
+    font-size: 0.72rem !important;
+    padding: 0.3rem 0.5rem !important;
+}
+
+/* Legacy avatar */
 .celeb-avatar {
     width: 80px;
     height: 80px;
@@ -404,16 +479,6 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
-}
-
-.celeb-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(255,193,7,0.3);
-    display: block;
     margin: 0 auto;
 }
 
@@ -435,16 +500,16 @@ footer {
 
 /* Admin Celebrity Images */
 .admin-celeb-img {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid rgba(255,193,7,0.3);
 }
 
 .admin-celeb-placeholder {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     background: rgba(255,193,7,0.1);
     border: 2px solid rgba(255,193,7,0.2);
@@ -460,15 +525,15 @@ footer {
 }
 
 .celeb-detail-img-wrapper {
-    width: 250px;
-    height: 250px;
+    width: 220px;
+    height: 220px;
     position: relative;
     margin: 0 auto;
 }
 
 .celeb-detail-img {
-    width: 250px;
-    height: 250px;
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid rgba(255,193,7,0.5);
@@ -476,14 +541,17 @@ footer {
 }
 
 .celeb-detail-placeholder {
-    width: 250px;
-    height: 250px;
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
-    background: rgba(255,193,7,0.1);
-    border: 4px solid rgba(255,193,7,0.3);
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 4px solid rgba(255,193,7,0.4);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 4rem;
+    font-weight: 700;
+    color: #ffc107;
 }
 
 .celeb-stat-card {
@@ -502,12 +570,12 @@ footer {
 }
 
 .bio-text p {
-    font-size: 1.05rem;
+    font-size: 1rem;
     line-height: 1.9;
 }
 
 .quick-facts li {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .celeb-cta-card {
@@ -521,6 +589,7 @@ footer {
 
 .breadcrumb {
     background: transparent;
+    flex-wrap: wrap;
 }
 
 /* Orders / Booking Page */
@@ -540,52 +609,24 @@ footer {
     margin: 0 auto;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .hero-section {
-        min-height: 100vh;
-        padding: 6rem 0 4rem;
-    }
-
-    .display-3 {
-        font-size: 2.2rem;
-    }
-
-    .membership-card-featured {
-        transform: scale(1);
-    }
-
-    .membership-card-featured:hover {
-        transform: translateY(-8px);
-    }
-
-    .admin-sidebar {
-        width: 100% !important;
-        min-height: auto !important;
-    }
-
-    .celeb-detail-img-wrapper {
-        width: 180px;
-        height: 180px;
-    }
-
-    .celeb-detail-img {
-        width: 180px;
-        height: 180px;
-    }
-
-    .celeb-detail-placeholder {
-        width: 180px;
-        height: 180px;
-    }
+/* Celebrity Detail Booking Options */
+.booking-option-card {
+    background: #252525;
+    border: 1px solid #2a2a2a;
+    transition: border-color 0.3s ease;
 }
+
+.booking-option-card:hover {
+    border-color: rgba(255,193,7,0.4);
+}
+
 /* Chatbot */
 .chatbot-toggle-btn {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
+    bottom: 25px;
+    right: 25px;
+    width: 55px;
+    height: 55px;
     background: linear-gradient(135deg, #ffc107, #ff9800);
     border: none;
     border-radius: 50%;
@@ -621,9 +662,9 @@ footer {
 
 .chatbot-container {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 360px;
+    bottom: 25px;
+    right: 25px;
+    width: 350px;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0,0,0,0.5);
@@ -633,7 +674,7 @@ footer {
 
 .chatbot-header {
     background: linear-gradient(135deg, #1a1a2e, #16213e);
-    padding: 1rem;
+    padding: 0.85rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -643,14 +684,15 @@ footer {
 }
 
 .chatbot-avatar {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     background: rgba(255,193,7,0.2);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #ffc107;
+    flex-shrink: 0;
 }
 
 .chatbot-status {
@@ -667,6 +709,7 @@ footer {
     background: #4caf84;
     border-radius: 50%;
     animation: pulse-dot 2s infinite;
+    flex-shrink: 0;
 }
 
 @keyframes pulse-dot {
@@ -678,7 +721,7 @@ footer {
     display: none;
     flex-direction: column;
     background: #0d0d0d;
-    height: 420px;
+    height: 400px;
 }
 
 .chatbot-messages {
@@ -694,7 +737,7 @@ footer {
 
 .chat-message {
     display: flex;
-    max-width: 85%;
+    max-width: 88%;
 }
 
 .user-message {
@@ -706,9 +749,9 @@ footer {
 }
 
 .message-bubble {
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 0.9rem;
     border-radius: 12px;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     line-height: 1.5;
 }
 
@@ -737,8 +780,8 @@ footer {
     border: 1px solid rgba(255,193,7,0.3);
     color: #ffc107;
     border-radius: 20px;
-    padding: 0.3rem 0.75rem;
-    font-size: 0.75rem;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.72rem;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -762,8 +805,8 @@ footer {
     border: 1px solid #2a2a2a !important;
     color: #f0f0f0 !important;
     border-radius: 20px !important;
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.82rem;
 }
 
 .chatbot-input:focus {
@@ -773,8 +816,8 @@ footer {
 }
 
 .chatbot-send-btn {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     background: #ffc107;
     border: none;
     border-radius: 50%;
@@ -791,15 +834,367 @@ footer {
     transform: scale(1.1);
 }
 
+/* =====================
+   RESPONSIVE BREAKPOINTS
+   ===================== */
+
+/* Large tablets and small desktops */
+@media (max-width: 992px) {
+    .navbar-brand {
+        font-size: 0.95rem;
+    }
+
+    .hero-section {
+        min-height: 80vh;
+        padding: 5rem 0 3rem;
+    }
+
+    .display-3 {
+        font-size: 2.5rem;
+    }
+
+    .membership-card-featured {
+        transform: scale(1.02);
+    }
+
+    .admin-sidebar {
+        width: 220px !important;
+    }
+
+    .celeb-detail-img-wrapper {
+        width: 180px;
+        height: 180px;
+    }
+
+    .celeb-detail-img {
+        width: 180px;
+        height: 180px;
+    }
+
+    .celeb-detail-placeholder {
+        width: 180px;
+        height: 180px;
+        font-size: 3rem;
+    }
+}
+
+/* Tablets */
 @media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 0.85rem;
+    }
+
+    .navbar-collapse {
+        background: #0a0a0a;
+        padding: 1rem;
+        border-radius: 0 0 12px 12px;
+        border-top: 1px solid #1e1e1e;
+        margin-top: 0.5rem;
+    }
+
+    .hero-section {
+        min-height: auto;
+        padding: 5rem 0 3rem;
+        text-align: center;
+    }
+
+    .display-3 {
+        font-size: 2rem;
+    }
+
+    .hero-section .d-flex.gap-3 {
+        justify-content: center !important;
+    }
+
+    .hero-section .d-flex.gap-4 {
+        justify-content: center !important;
+    }
+
+    .membership-card-featured {
+        transform: scale(1);
+    }
+
+    .membership-card-featured:hover {
+        transform: translateY(-8px);
+    }
+
+    .dashboard-header .col-auto:last-child {
+        display: none;
+    }
+
+    .admin-sidebar {
+        width: 100% !important;
+        min-height: auto !important;
+    }
+
+    .celeb-detail-img-wrapper {
+        width: 150px;
+        height: 150px;
+    }
+
+    .celeb-detail-img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .celeb-detail-placeholder {
+        width: 150px;
+        height: 150px;
+        font-size: 2.5rem;
+    }
+
+    .celeb-detail-hero {
+        text-align: center;
+    }
+
+    .celeb-detail-hero .d-flex.gap-3 {
+        justify-content: center !important;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .celeb-detail-hero .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
     .chatbot-container {
         width: calc(100vw - 20px);
         right: 10px;
         bottom: 10px;
+        left: 10px;
     }
 
     .chatbot-toggle-btn {
         right: 15px;
         bottom: 15px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .chatbot-body {
+        height: 350px;
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+
+    .btn-lg {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    .page-header {
+        padding: 2rem 0 !important;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 0.8rem;
+    }
+
+    .hero-section {
+        padding: 4.5rem 0 2.5rem;
+    }
+
+    .display-3 {
+        font-size: 1.75rem;
+    }
+
+    .hero-section p.fs-5 {
+        font-size: 0.95rem !important;
+    }
+
+    .hero-section .btn-lg {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .hero-section .d-flex.gap-4 {
+        gap: 1rem !important;
+    }
+
+    .bg-warning .col-6 {
+        font-size: 0.8rem;
+    }
+
+    .fs-1 {
+        font-size: 1.6rem !important;
+    }
+
+    .membership-card {
+        margin-bottom: 1rem;
+    }
+
+    .display-5 {
+        font-size: 2rem;
+    }
+
+    /* Celebrity cards on mobile */
+    .celeb-card {
+        padding: 0.6rem !important;
+    }
+
+    .celeb-img-wrapper,
+    .celeb-img,
+    .celeb-initials {
+        width: 60px;
+        height: 60px;
+        font-size: 1rem;
+    }
+
+    .celeb-name {
+        font-size: 0.68rem;
+        min-height: 1.8rem;
+    }
+
+    .celeb-cat-badge {
+        font-size: 0.55rem;
+    }
+
+    .celeb-btn {
+        font-size: 0.62rem !important;
+        padding: 0.2rem 0.35rem !important;
+    }
+
+    /* Celebrity detail */
+    .celeb-detail-img-wrapper {
+        width: 130px;
+        height: 130px;
+    }
+
+    .celeb-detail-img {
+        width: 130px;
+        height: 130px;
+    }
+
+    .celeb-detail-placeholder {
+        width: 130px;
+        height: 130px;
+        font-size: 2rem;
+    }
+
+    .celeb-stat-card {
+        padding: 0.6rem !important;
+    }
+
+    .celeb-stat-card .fw-bold {
+        font-size: 0.8rem;
+    }
+
+    .stat-card {
+        padding: 1rem !important;
+    }
+
+    .stat-card h4 {
+        font-size: 1.3rem;
+    }
+
+    .dashboard-header {
+        padding: 1rem !important;
+    }
+
+    .dashboard-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .dashboard-header p {
+        font-size: 0.8rem;
+    }
+
+    .success-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .admin-sidebar h5 {
+        font-size: 0.9rem;
+    }
+
+    .faq-btn {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem !important;
+    }
+
+    .experience-img-placeholder {
+        height: 140px;
+    }
+
+    footer p {
+        font-size: 0.8rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .page-header p {
+        font-size: 0.9rem !important;
+    }
+
+    .breadcrumb {
+        font-size: 0.8rem;
+    }
+
+    .bio-text p {
+        font-size: 0.9rem;
+    }
+
+    .quick-facts li {
+        font-size: 0.82rem;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .chatbot-body {
+        height: 320px;
+    }
+
+    .message-bubble {
+        font-size: 0.78rem;
+    }
+
+    .admin-celeb-img,
+    .admin-celeb-placeholder {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 375px) {
+    .display-3 {
+        font-size: 1.5rem;
+    }
+
+    .navbar-brand {
+        font-size: 0.75rem;
+    }
+
+    .celeb-img-wrapper,
+    .celeb-img,
+    .celeb-initials {
+        width: 52px;
+        height: 52px;
+        font-size: 0.9rem;
+    }
+
+    .btn-lg {
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .celeb-btn {
+        font-size: 0.6rem !important;
+        padding: 0.2rem 0.3rem !important;
     }
 }

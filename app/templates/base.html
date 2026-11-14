@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>{% block title %}Official Celebrity Management{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -12,12 +12,15 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ url_for('main.index') }}">⭐ Official Celebrity Management</a>
+            <a class="navbar-brand fw-bold" href="{{ url_for('main.index') }}">
+                ⭐ <span class="d-none d-sm-inline">Official Celebrity Management</span>
+                <span class="d-inline d-sm-none">OCM</span>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('celebrities.index') }}">Celebrities</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('membership.index') }}">Membership</a></li>
@@ -27,14 +30,17 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
-                        <li class="nav-item"><a class="nav-link btn btn-warning text-dark px-3 ms-2 rounded-pill fw-bold" href="{{ url_for('auth.register') }}">Sign Up</a></li>
+                        <li class="nav-item mt-2 mt-lg-0 ms-lg-2">
+                            <a class="nav-link btn btn-warning text-dark px-3 rounded-pill fw-bold"
+                               href="{{ url_for('auth.register') }}">Sign Up</a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container mt-3">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -51,7 +57,7 @@
 
     <footer class="py-4 mt-5">
         <div class="container text-center">
-            <p class="mb-1 fw-bold">⭐ Official Celebrity Management</p>
+            <p class="mb-1 fw-bold small">⭐ Official Celebrity Management</p>
             <p class="text-muted small mb-0">&copy; 2026 Official Celebrity Management. All rights reserved.</p>
         </div>
     </footer>
@@ -93,7 +99,7 @@
                 </div>
             </div>
             <div class="chatbot-input-area">
-                <input type="text" id="chatInput" class="chatbot-input form-control"
+                <input type="text" id="chatInput" class="chatbot-input"
                        placeholder="Type a message..."
                        onkeypress="if(event.key==='Enter') sendMessage()">
                 <button class="chatbot-send-btn" onclick="sendMessage()">
@@ -112,35 +118,35 @@
     const faqs = {
         'book': {
             keywords: ['book', 'booking', 'reserve', 'how do i book', 'purchase', 'buy'],
-            answer: '📋 <strong>How to Book:</strong><br><br>1. Browse our experiences<br>2. Click <strong>Book Now</strong> on your chosen package<br>3. Fill in your details on the booking form<br>4. Submit — your email will open pre-filled<br>5. Send the email to our team<br>6. We reply within 24hrs with payment instructions<br>7. Pay and your booking is confirmed! ✅'
+            answer: '📋 <strong>How to Book:</strong><br><br>1. Browse our experiences<br>2. Click <strong>Book Now</strong><br>3. Fill in your details<br>4. Submit — email opens pre-filled<br>5. Send email to our team<br>6. We reply within 24hrs with payment instructions<br>7. Pay and booking confirmed! ✅'
         },
         'membership': {
             keywords: ['membership', 'member', 'card', 'price', 'cost', 'how much', 'fee', 'subscription'],
-            answer: '💳 <strong>Membership Packages:</strong><br><br>🥈 <strong>Silver</strong> — $300/year<br>• Official membership card<br>• Fan club newsletter<br>• Member discounts<br><br>🥇 <strong>Gold</strong> — $375/year<br>• Everything in Silver<br>• Priority event access<br>• Early merch drops<br><br>💎 <strong>Platinum</strong> — $500/year<br>• Everything in Gold<br>• VIP invitations<br>• Meet & greet priority<br>• Signed merchandise<br><br><a href="/membership/" style="color:#ffc107;">View all plans →</a>'
+            answer: '💳 <strong>Membership Packages:</strong><br><br>🥈 <strong>Silver</strong> — $300/year<br>• Official membership card<br>• Fan club newsletter<br>• Member discounts<br><br>🥇 <strong>Gold</strong> — $375/year<br>• Everything in Silver<br>• Priority event access<br>• Early merch drops<br><br>💎 <strong>Platinum</strong> — $500/year<br>• Everything in Gold<br>• VIP invitations<br>• Meet & greet priority<br><br><a href="/membership/" style="color:#ffc107;">View all plans →</a>'
         },
         'payment': {
             keywords: ['payment', 'pay', 'how to pay', 'payment method', 'invoice', 'paypal', 'bank', 'transfer'],
-            answer: '💰 <strong>How Payments Work:</strong><br><br>1. Submit your booking request<br>2. Your email opens pre-filled<br>3. Send it to <strong>officialcelebritymanagement85@gmail.com</strong><br>4. Our team replies within <strong>24 hours</strong> with secure payment instructions<br>5. Complete payment<br>6. Booking confirmed! 🎉'
+            answer: '💰 <strong>How Payments Work:</strong><br><br>1. Submit booking request<br>2. Email opens pre-filled<br>3. Send to <strong>officialcelebritymanagement85@gmail.com</strong><br>4. Team replies within <strong>24 hours</strong> with payment instructions<br>5. Complete payment<br>6. Booking confirmed! 🎉'
         },
         'contact': {
             keywords: ['contact', 'email', 'support', 'help', 'reach', 'talk', 'speak', 'customer service'],
-            answer: '📧 <strong>Contact Us:</strong><br><br>Email: <strong>officialcelebritymanagement85@gmail.com</strong><br><br>We respond within <strong>24 hours</strong>. Our team is available Monday to Saturday.'
+            answer: '📧 <strong>Contact Us:</strong><br><br>Email: <strong>officialcelebritymanagement85@gmail.com</strong><br><br>We respond within <strong>24 hours</strong>. Available Monday to Saturday.'
         },
         'experiences': {
             keywords: ['experience', 'experiences', 'what is available', 'meet', 'greet', 'backstage', 'vacation', 'private session', 'vip'],
-            answer: '⭐ <strong>Available Experiences:</strong><br><br>🤝 Meet & Greet — $199.99<br>🌟 VIP Meet & Greet — $349.99<br>🎙️ Private Session — $999.99<br>✈️ Weekend Getaway — $2,499.99<br>👑 VIP Vacation — $4,999.99<br>📸 Photo Session — $149.99<br><br><a href="/experiences/" style="color:#ffc107;">View all experiences →</a>'
+            answer: '⭐ <strong>Available Experiences:</strong><br><br>🤝 Meet & Greet — $199.99<br>🌟 VIP Meet & Greet — $349.99<br>🎙️ Private Session — $999.99<br>✈️ Weekend Getaway — $2,499.99<br>👑 VIP Vacation — $4,999.99<br>📸 Photo Session — $149.99<br><br><a href="/experiences/" style="color:#ffc107;">View all →</a>'
         },
         'official': {
             keywords: ['official', 'legit', 'legitimate', 'real', 'fake', 'scam', 'trust', 'verified', 'genuine'],
-            answer: '✅ <strong>Yes, We Are 100% Official!</strong><br><br>Every membership card, experience and booking is authenticated and authorized directly by our management team. All transactions are secure and verified.'
+            answer: '✅ <strong>Yes, 100% Official!</strong><br><br>Every membership card, experience and booking is authenticated and authorized directly by our management team. All transactions are secure and verified.'
         },
         'refund': {
             keywords: ['refund', 'cancel', 'cancellation', 'money back', 'return'],
-            answer: '🔄 <strong>Cancellation & Refunds:</strong><br><br>Contact us at:<br><strong>officialcelebritymanagement85@gmail.com</strong><br><br>Include your booking reference number. We respond within 24 hours.'
+            answer: '🔄 <strong>Cancellation & Refunds:</strong><br><br>Contact: <strong>officialcelebritymanagement85@gmail.com</strong><br><br>Include your booking reference number. We respond within 24 hours.'
         },
         'celebrities': {
             keywords: ['celebrity', 'celebrities', 'who', 'list', 'artist', 'singer', 'actor', 'wrestler', 'athlete'],
-            answer: '🌟 <strong>Our Celebrity Roster:</strong><br><br>130+ world-class celebrities across:<br><br>🎵 Musicians & Singers (30)<br>🎬 Actors & Actresses (30)<br>⚽ Athletes & Sports (20)<br>📺 TV & Entertainment (20)<br>🤼 WWE Superstars (30)<br><br><a href="/celebrities/" style="color:#ffc107;">Browse all celebrities →</a>'
+            answer: '🌟 <strong>Our Celebrity Roster:</strong><br><br>130+ world-class celebrities across:<br><br>🎵 Musicians & Singers (30)<br>🎬 Actors & Actresses (30)<br>⚽ Athletes & Sports (20)<br>📺 TV & Entertainment (20)<br>🤼 WWE Superstars (30)<br><br><a href="/celebrities/" style="color:#ffc107;">Browse all →</a>'
         },
         'delivery': {
             keywords: ['delivery', 'shipping', 'card delivery', 'receive', 'when', 'how long'],
@@ -187,10 +193,10 @@
         if (!message) return;
         addMessage(message, 'user');
         input.value = '';
-        document.getElementById('quickReplies').style.display = 'none';
+        const qr = document.getElementById('quickReplies');
+        if (qr) qr.style.display = 'none';
         setTimeout(() => {
-            const response = getBotResponse(message);
-            addMessage(response, 'bot');
+            addMessage(getBotResponse(message), 'bot');
         }, 600);
     }
 
@@ -207,16 +213,15 @@
         const lower = message.toLowerCase();
         for (const [key, faq] of Object.entries(faqs)) {
             for (const keyword of faq.keywords) {
-                if (lower.includes(keyword)) {
-                    return faq.answer;
-                }
+                if (lower.includes(keyword)) return faq.answer;
             }
         }
-        return '🤔 I\'m not sure about that. For detailed help contact us at:<br><br>📧 <strong>officialcelebritymanagement85@gmail.com</strong><br><br>Or ask about bookings, memberships, payments or our celebrities.';
+        return '🤔 I\'m not sure about that. Contact us at:<br><br>📧 <strong>officialcelebritymanagement85@gmail.com</strong><br><br>Or ask about bookings, memberships, payments or celebrities.';
     }
 
     setTimeout(() => {
-        document.getElementById('chatToggleBtn').style.display = 'flex';
+        const btn = document.getElementById('chatToggleBtn');
+        if (btn) btn.style.display = 'flex';
     }, 3000);
     </script>
 

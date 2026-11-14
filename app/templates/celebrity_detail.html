@@ -13,7 +13,7 @@
             <div class="col-lg-4 text-center">
                 <div class="celeb-detail-img-wrapper mx-auto">
                     {% if celeb.image %}
-                    <img src="{{ url_for('static', filename=celeb.image) }}"
+                    <img src="{{ celeb.image if celeb.image.startswith('http') else url_for('static', filename=celeb.image) }}"
                          alt="{{ celeb.name }}"
                          class="celeb-detail-img"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -95,11 +95,13 @@
 
                 <!-- CTA Buttons -->
                 <div class="d-flex gap-3 flex-wrap">
-                    <a href="{{ url_for('membership.index') }}" class="btn btn-warning btn-lg rounded-pill px-5 fw-bold">
-                        <i class="fas fa-id-card me-2"></i>Get Membership
-                    </a>
-                    <a href="{{ url_for('experiences.index') }}" class="btn btn-outline-light btn-lg rounded-pill px-5">
+                    <a href="{{ url_for('orders.book', package_key='meetgreet_standard') }}?celebrity={{ celeb.name }}"
+                       class="btn btn-warning btn-lg rounded-pill px-5 fw-bold">
                         <i class="fas fa-calendar-check me-2"></i>Book Experience
+                    </a>
+                    <a href="{{ url_for('membership.index') }}"
+                       class="btn btn-outline-light btn-lg rounded-pill px-5">
+                        <i class="fas fa-id-card me-2"></i>Get Membership
                     </a>
                 </div>
             </div>
@@ -137,6 +139,67 @@
                     {% endif %}
                 </div>
                 {% endif %}
+            </div>
+
+            <!-- Booking Options -->
+            <div class="celeb-bio-card rounded-4 p-4">
+                <h4 class="fw-bold mb-4">
+                    <i class="fas fa-calendar-star text-warning me-2"></i>Book an Experience with {{ celeb.name }}
+                </h4>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="booking-option-card p-3 rounded-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0">Meet & Greet</h6>
+                                <span class="badge bg-warning text-dark">$199.99</span>
+                            </div>
+                            <p class="text-muted small mb-3">Personal meeting, photos & autographs</p>
+                            <a href="{{ url_for('orders.book', package_key='meetgreet_standard') }}?celebrity={{ celeb.name }}"
+                               class="btn btn-warning btn-sm rounded-pill px-3 fw-bold w-100">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="booking-option-card p-3 rounded-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0">VIP Meet & Greet</h6>
+                                <span class="badge bg-warning text-dark">$349.99</span>
+                            </div>
+                            <p class="text-muted small mb-3">Backstage access + extended time</p>
+                            <a href="{{ url_for('orders.book', package_key='meetgreet_vip') }}?celebrity={{ celeb.name }}"
+                               class="btn btn-warning btn-sm rounded-pill px-3 fw-bold w-100">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="booking-option-card p-3 rounded-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0">Private Session</h6>
+                                <span class="badge bg-warning text-dark">$999.99</span>
+                            </div>
+                            <p class="text-muted small mb-3">Fully private one-on-one session</p>
+                            <a href="{{ url_for('orders.book', package_key='meetgreet_private') }}?celebrity={{ celeb.name }}"
+                               class="btn btn-warning btn-sm rounded-pill px-3 fw-bold w-100">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="booking-option-card p-3 rounded-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0">VIP Vacation</h6>
+                                <span class="badge bg-warning text-dark">$4,999.99</span>
+                            </div>
+                            <p class="text-muted small mb-3">5-night luxury celebrity experience</p>
+                            <a href="{{ url_for('orders.book', package_key='vacation_vip') }}?celebrity={{ celeb.name }}"
+                               class="btn btn-warning btn-sm rounded-pill px-3 fw-bold w-100">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -185,7 +248,7 @@
             </div>
 
             <!-- Membership CTA -->
-            <div class="celeb-cta-card rounded-4 p-4 text-center">
+            <div class="celeb-cta-card rounded-4 p-4 text-center mb-4">
                 <i class="fas fa-crown fa-3x text-warning mb-3"></i>
                 <h5 class="fw-bold mb-2">Get Exclusive Access</h5>
                 <p class="text-muted small mb-3">Purchase a membership to unlock exclusive experiences with {{ celeb.name }}.</p>
@@ -193,6 +256,18 @@
                     View Memberships
                 </a>
             </div>
+
+            <!-- Admin Edit -->
+            {% if current_user.is_authenticated and current_user.is_admin %}
+            <div class="dash-card rounded-4 p-4 text-center">
+                <i class="fas fa-cog fa-2x text-warning mb-3"></i>
+                <h6 class="fw-bold mb-2">Admin Actions</h6>
+                <a href="{{ url_for('admin.edit_celebrity', celeb_id=celeb.id) }}"
+                   class="btn btn-warning rounded-pill px-4 fw-bold w-100">
+                    <i class="fas fa-edit me-2"></i>Edit Profile
+                </a>
+            </div>
+            {% endif %}
 
         </div>
     </div>
@@ -210,7 +285,7 @@
             <a href="{{ url_for('celebrities.detail', celeb_id=r.id) }}" class="text-decoration-none">
                 <div class="celeb-card text-center p-3 rounded-4 h-100">
                     {% if r.image %}
-                    <img src="{{ url_for('static', filename=r.image) }}"
+                    <img src="{{ r.image if r.image.startswith('http') else url_for('static', filename=r.image) }}"
                          alt="{{ r.name }}"
                          class="celeb-img mx-auto mb-3"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
